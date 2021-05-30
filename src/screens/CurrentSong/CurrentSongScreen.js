@@ -1,12 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, Button} from 'react-native';
+import {Text, View, Button, ImageBackground} from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import {useTrackPlayerProgress} from 'react-native-track-player';
 import Slider from '@react-native-community/slider';
 import {useTrackPlayerEvents} from 'react-native-track-player/lib/hooks';
 import {TrackPlayerEvents, STATE_PLAYING} from 'react-native-track-player';
+import LinearGradient from 'react-native-linear-gradient';
+import styles from './styles';
+import rootColor from '../../constants/rootColor';
+import PlayerControl from '../../components/PlayerControl/PlayerControl';
+import DetailSong from '../../components/DetailSong/DetailSong';
+import convertTime from '../../utils/convertTime';
 
-const CurrentSong = () => {
+const CurrentSongScreen = ({navigation}) => {
   const [isTrackPlayerInit, setIsTrackPlayerInit] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSeeking, setIsSeeking] = useState(false);
@@ -46,38 +52,64 @@ const CurrentSong = () => {
     const startPlayer = async () => {
       let isInit = await trackPlayerInit();
       setIsTrackPlayerInit(isInit);
+      if (isInit) {
+        onButtonPressed();
+      }
     };
-    setTimeout(() => {
-      console.log(duration, position);
-    }, 1000);
 
     startPlayer();
   }, []);
 
   useEffect(() => {
+    console.log(position, duration);
     if (!isSeeking && position && duration) {
-      console.log('position, duration', position, duration);
       setSliderValue(position / duration);
     }
   }, [position, duration]);
+  useEffect(() => {
+    navigation.setOptions({
+      title: 'Nhạc hiện tại',
+      titleAlign: 'center',
+    });
+  }, [navigation]);
   return (
-    <View>
-      <Button
-        title={isPlaying ? 'Pause' : 'Play'}
-        onPress={onButtonPressed}
-        disabled={!isTrackPlayerInit}
-      />
-      <Slider
-        style={{width: 400, height: 40}}
-        minimumValue={0}
-        maximumValue={1}
-        value={sliderValue}
-        minimumTrackTintColor="red"
-        maximumTrackTintColor="orange"
-        onSlidingStart={slidingStarted}
-        onSlidingComplete={slidingCompleted}
-      />
-    </View>
+    <ImageBackground
+      resizeMode="cover"
+      style={styles.container}
+      source={{
+        uri: 'https://leaderreaderjournal.com/wp-content/uploads/2021/01/dog.jpg',
+      }}>
+      <View style={styles.wrapper}>
+        <DetailSong />
+        <Slider
+          style={{width: 400, height: 40}}
+          minimumValue={0}
+          maximumValue={1}
+          value={sliderValue}
+          thumbTintColor={rootColor.whiteColor}
+          minimumTrackTintColor={rootColor.whiteColor}
+          maximumTrackTintColor={rootColor.smokeColor}
+          onSlidingStart={slidingStarted}
+          onSlidingComplete={slidingCompleted}
+        />
+        <View>
+          <Text style={{color: rootColor.whiteColor}}>
+            {convertTime(position)}
+          </Text>
+          <Text style={{color: rootColor.whiteColor}}>
+            {convertTime(duration)}
+          </Text>
+        </View>
+        <PlayerControl
+          isPlaying={isPlaying}
+          onButtonPressed={onButtonPressed}
+          isTrackPlayerInit={isTrackPlayerInit}
+        />
+      </View>
+      <LinearGradient
+        colors={['#00000047', '#000000']}
+        style={styles.hightLight}></LinearGradient>
+    </ImageBackground>
   );
 };
 
@@ -107,4 +139,4 @@ const trackPlayerInit = async () => {
   return true;
 };
 
-export default CurrentSong;
+export default CurrentSongScreen;

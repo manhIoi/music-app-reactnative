@@ -3,7 +3,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from '../screens/Home/HomeScreen';
 import globalScreenOptions from '../constants/globalScreenOptions';
 import ListMusicScreen from '../screens/ListMusic/ListMusicScreen';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import childHeaderScreen from '../constants/childHeaderScreen';
 
