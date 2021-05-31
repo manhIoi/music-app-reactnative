@@ -6,7 +6,13 @@ import rootColor from '../../constants/rootColor';
 import styles from './styles';
 
 const PlayerControl = props => {
-  const {isTrackPlayerInit, isPlaying, onButtonPressed} = props;
+  const {
+    isTrackPlayerInit,
+    isPlaying,
+    onButtonPressed,
+    onNextSong,
+    onPrevSong,
+  } = props;
   return (
     <View style={styles.container}>
       <TouchableOpacity>
@@ -14,6 +20,7 @@ const PlayerControl = props => {
           name="skip-previous"
           size={30}
           color={rootColor.whiteColor}
+          onPress={onPrevSong}
         />
       </TouchableOpacity>
       <TouchableOpacity
@@ -28,7 +35,12 @@ const PlayerControl = props => {
       </TouchableOpacity>
 
       <TouchableOpacity>
-        <MaterialIcon name="skip-next" size={30} color={rootColor.whiteColor} />
+        <MaterialIcon
+          name="skip-next"
+          size={30}
+          color={rootColor.whiteColor}
+          onPress={onNextSong}
+        />
       </TouchableOpacity>
     </View>
   );

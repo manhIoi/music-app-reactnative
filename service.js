@@ -29,4 +29,11 @@ module.exports = async function () {
 
     TrackPlayer.seekTo(newPosition);
   });
+
+  TrackPlayer.addEventListener('remote-next', async () => {
+    await TrackPlayer.skipToNext();
+  });
+  TrackPlayer.addEventListener('remote-previous', async () => {
+    await TrackPlayer.skipToPrevious();
+  });
 };

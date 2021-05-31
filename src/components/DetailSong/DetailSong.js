@@ -3,7 +3,7 @@ import {View, Text} from 'react-native';
 import styles from './styles';
 import TextTicker from 'react-native-text-ticker';
 
-const DetailSong = () => {
+const DetailSong = ({title, artist}) => {
   return (
     <View style={styles.container}>
       <TextTicker
@@ -14,9 +14,9 @@ const DetailSong = () => {
         shouldAnimateTreshold={40}
         repeatSpacer={200}
         marqueeDelay={1000}>
-        Entention - Justin Bieber
+        {title} - {artist}
       </TextTicker>
-      <Text style={styles.normalText}>Justin BieBer</Text>
+      <Text style={styles.normalText}>{artist}</Text>
     </View>
   );
 };
