@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, Text, StatusBar} from 'react-native';
+import {View, Text, StatusBar, TouchableOpacity} from 'react-native';
 import styles from './styles';
 import LinearGradient from 'react-native-linear-gradient';
 import rootColor from '../../constants/rootColor';
@@ -56,7 +56,10 @@ const AccountScreen = () => {
             rounded
           />
           <Text style={styles.usernameText}>Lợi</Text>
-          <MyButton content="Chỉnh sửa" />
+          <MyButton
+            content="Chỉnh sửa"
+            callback={() => navigation.navigate('SettingAccount')}
+          />
         </View>
       </LinearGradient>
     </>
