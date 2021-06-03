@@ -5,22 +5,10 @@ import {ScrollView} from 'react-native-gesture-handler';
 import ItemMusic from '../ItemMusic/ItemMusic';
 import styles from './styles';
 
-const ListMusic = () => {
+const ListMusic = ({songs}) => {
   return (
     <ScrollView style={styles.container}>
-      <ItemMusic />
-      <ItemMusic />
-      <ItemMusic />
-      <ItemMusic />
-      <ItemMusic />
-      <ItemMusic />
-      <ItemMusic />
-      <ItemMusic />
-      <ItemMusic />
-      <ItemMusic />
-      <ItemMusic />
-      <ItemMusic />
-      <ItemMusic />
+      {songs && songs.map(song => <ItemMusic song={song} songs={songs} />)}
     </ScrollView>
   );
 };

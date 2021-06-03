@@ -5,12 +5,20 @@ import rootColor from '../../constants/rootColor';
 import styles from './styles';
 import {useNavigation} from '@react-navigation/native';
 
-const ItemMusic = () => {
+const ItemMusic = ({song, songs}) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
       activeOpacity={0.5}
-      onPress={() => navigation.navigate('Current Song Nav')}>
+      onPress={() =>
+        navigation.navigate('Current Song Nav', {
+          params: {
+            songSelected: song,
+            listSong: songs,
+          },
+          screen: 'Current Song',
+        })
+      }>
       <ListItem
         bottomDivider
         containerStyle={{
@@ -20,15 +28,15 @@ const ItemMusic = () => {
         <Avatar
           size={45}
           source={{
-            uri: 'https://i.ytimg.com/vi/MPV2METPeJU/maxresdefault.jpg',
+            uri: song?.artwork,
           }}
         />
         <ListItem.Content>
           <ListItem.Title style={styles.strongText}>
-            Thuận theo ý trời
+            {song?.title}
           </ListItem.Title>
           <ListItem.Subtitle style={styles.normalText}>
-            1000.100
+            {song?.artist || 'Unknow'}
           </ListItem.Subtitle>
         </ListItem.Content>
         <ListItem.Chevron

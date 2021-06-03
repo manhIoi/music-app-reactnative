@@ -12,7 +12,7 @@ import PlayerControl from '../../components/PlayerControl/PlayerControl';
 import DetailSong from '../../components/DetailSong/DetailSong';
 import convertTime from '../../utils/convertTime';
 import TimeDetail from '../../components/TimeDetail/TimeDetail';
-import listTrack from '../../data';
+import {useRoute} from '@react-navigation/native';
 
 const CurrentSongScreen = ({navigation}) => {
   const [isTrackPlayerInit, setIsTrackPlayerInit] = useState(false);
@@ -21,6 +21,8 @@ const CurrentSongScreen = ({navigation}) => {
   const [sliderValue, setSliderValue] = useState(0);
   const {position, duration} = useTrackPlayerProgress(250);
   const [trackInfo, setTrackInfo] = useState({});
+  const route = useRoute();
+  const {songSelected, listSong} = route.params;
 
   const onButtonPressed = () => {
     if (!isPlaying) {
@@ -59,7 +61,18 @@ const CurrentSongScreen = ({navigation}) => {
 
   useEffect(() => {
     const startPlayer = async () => {
-      let isInit = await trackPlayerInit();
+      const tmp = await listSong.map(song => {
+        return {
+          id: song._id,
+          url: song.url,
+          type: song.type,
+          album: 'My Album',
+          artist: song.artist,
+          artwork: song.artwork,
+          title: song.title,
+        };
+      });
+      let isInit = await trackPlayerInit(tmp);
       setIsTrackPlayerInit(isInit);
       if (isInit) {
         let mounted = true;
@@ -72,8 +85,10 @@ const CurrentSongScreen = ({navigation}) => {
         const listener = TrackPlayer.addEventListener(
           'playback-track-changed',
           async data => {
+            console.log(data);
             const track = await TrackPlayer.getTrack(data.nextTrack);
             if (!mounted) return;
+            console.log(track);
             setTrackInfo(track);
           },
         );
@@ -145,7 +160,7 @@ const CurrentSongScreen = ({navigation}) => {
   );
 };
 
-const trackPlayerInit = async () => {
+const trackPlayerInit = async listTrack => {
   await TrackPlayer.setupPlayer();
   console.log('Player is ready');
   await TrackPlayer.add(listTrack);

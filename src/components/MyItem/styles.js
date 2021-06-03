@@ -1,10 +1,12 @@
 import {StyleSheet} from 'react-native';
 import rootColor from '../../constants/rootColor';
+const widthItem = 130;
 
 const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
     marginLeft: 20,
+    width: widthItem,
   },
   firtItem: {
     marginLeft: 0,
@@ -13,12 +15,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: rootColor.whiteColor,
     fontSize: 16,
+    width: widthItem,
   },
   contentContainer: {
     flexDirection: 'column',
   },
   normalText: {
     color: rootColor.smokeColor,
+    width: widthItem,
   },
   largeText: {
     fontSize: 18,
@@ -29,8 +33,8 @@ const styles = StyleSheet.create({
   imageContainer: {
     borderRadius: 10,
     overflow: 'hidden',
-    width: 130,
-    height: 130,
+    width: widthItem,
+    height: widthItem,
   },
   image: {
     width: '100%',
