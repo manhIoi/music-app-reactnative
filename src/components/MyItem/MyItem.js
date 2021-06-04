@@ -11,7 +11,12 @@ const MyItem = props => {
     <TouchableOpacity
       style={[styles.container, !index && styles.firtItem]}
       activeOpacity={0.5}
-      onPress={() => navigation.navigate('List Music', {idAlbum: album._id})}>
+      onPress={() =>
+        navigation.navigate('List Music', {
+          idAlbum: album._id,
+          name: album.name,
+        })
+      }>
       <View style={styles.imageContainer}>
         <Image
           style={[

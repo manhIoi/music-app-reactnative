@@ -26,10 +26,6 @@ const HomeScreen = () => {
             _id={suggestion._id}
           />
         ))}
-      {/* <MyListItem title="Bảng xếp hạng" />
-      <MyListItem title="Nghệ sĩ nổi bật" rounded largeText />
-      <MyListItem title="Nhạc mới" />
-      <MyListItem title="Âu mỹ" rounded largeText /> */}
     </ScrollView>
   );
 };

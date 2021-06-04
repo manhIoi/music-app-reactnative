@@ -76,12 +76,18 @@ const CurrentSongScreen = ({navigation}) => {
       setIsTrackPlayerInit(isInit);
       if (isInit) {
         let mounted = true;
-        const trackId = await TrackPlayer.getCurrentTrack();
-        if (!mounted || !trackId) return;
-        const track = await TrackPlayer.getTrack(trackId);
-        if (!mounted) return;
-        setTrackInfo(track);
-        console.log('info track ', track);
+        if (!songSelected) {
+          const trackId = await TrackPlayer.getCurrentTrack();
+          if (!mounted || !trackId) return;
+          const track = await TrackPlayer.getTrack(trackId);
+          if (!mounted) return;
+          setTrackInfo(track);
+        } else {
+          const track = await TrackPlayer.getTrack(songSelected._id);
+          await TrackPlayer.skip(songSelected._id);
+          setTrackInfo(track);
+        }
+
         const listener = TrackPlayer.addEventListener(
           'playback-track-changed',
           async data => {

@@ -36,6 +36,7 @@ const CurrentSongNav = () => {
           ),
           headerLeft: () => (
             <MaterialIcon
+              style={{marginLeft: 4}}
               name="expand-more"
               color={rootColor.whiteColor}
               size={30}
