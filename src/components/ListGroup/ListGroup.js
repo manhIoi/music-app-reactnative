@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, ScrollView} from 'react-native';
-import ItemGroup from '../../ItemGroup/ItemGroup';
+import ItemGroup from '../ItemGroup/ItemGroup';
 import styles from './styles';
 
 const ListGroup = () => {

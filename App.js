@@ -7,6 +7,7 @@ import {LogBox, View} from 'react-native';
 import MyStatusBar from './src/components/MyStatusBar';
 import CurrentSongNav from './src/navigations/CurrentSongNav';
 import rootApi from './src/api';
+import Auth from './src/navigations/Auth';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,11 @@ const App = () => {
               presentation: 'modal',
               headerShown: false,
             }}
+          />
+          <Stack.Screen
+            name="Auth Nav"
+            component={Auth}
+            options={{headerShown: false}}
           />
         </Stack.Navigator>
       </NavigationContainer>
