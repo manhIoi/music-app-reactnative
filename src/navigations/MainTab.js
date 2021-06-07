@@ -10,19 +10,36 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import rootColor from '../constants/rootColor';
 import dimensitions from '../constants/dimensions';
 import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {loginAction} from '../redux/actions/userActions';
 
 const Tab = createMaterialBottomTabNavigator();
 
 const MainTab = () => {
   const navigation = useNavigation();
   const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  const checkOldUser = async () => {
+    if (!user._id) {
+      const userString = await AsyncStorage.getItem('user');
+      if (userString) {
+        const userObj = JSON.parse(userString);
+        console.log(userObj);
+        return await dispatch(loginAction(userObj.email, userObj.password));
+      } else {
+        navigation.navigate('Auth Nav');
+      }
+    } else {
+      navigation.navigate('MainTab');
+    }
+  };
 
   useLayoutEffect(() => {
-    if (!user._id) {
-      navigation.navigate('Auth Nav');
-    }
-  }, []);
+    // get old user
+    checkOldUser();
+  }, [user]);
 
   return (
     <Tab.Navigator
@@ -31,6 +48,7 @@ const MainTab = () => {
         height: dimensitions.heightTabbar,
         justifyContent: 'center',
       }}
+      shifting={false}
       screenOptions={globalStackOptions}>
       <Tab.Screen
         name="Home"

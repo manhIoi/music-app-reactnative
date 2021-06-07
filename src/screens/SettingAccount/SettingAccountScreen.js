@@ -5,9 +5,11 @@ import {useNavigation} from '@react-navigation/native';
 import {Avatar} from 'react-native-elements/dist/avatar/Avatar';
 import rootColor from '../../constants/rootColor';
 import {Accessory} from 'react-native-elements';
+import {useSelector} from 'react-redux';
 
 const SettingAccountScreen = () => {
   const navigation = useNavigation();
+  const user = useSelector(state => state.user);
   useEffect(() => {
     navigation.setOptions({
       title: 'Account Setting',
@@ -34,7 +36,7 @@ const SettingAccountScreen = () => {
         onPress={() => console.log('change avatar')}>
         <Avatar
           size={150}
-          title="L"
+          title={user && user?.displayName[0]}
           titleStyle={{
             color: rootColor.blackColor,
             fontSize: 50,
@@ -55,7 +57,10 @@ const SettingAccountScreen = () => {
           />
         </Avatar>
       </TouchableOpacity>
-      <TextInput defaultValue="Loi" style={styles.usernameInput} />
+      <TextInput
+        defaultValue={user && user?.displayName}
+        style={styles.usernameInput}
+      />
       <Text style={styles.noteText}>
         This is your name or nick name be display to app
       </Text>

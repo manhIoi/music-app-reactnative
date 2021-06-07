@@ -35,11 +35,21 @@ const CurrentSongScreen = ({navigation}) => {
   };
 
   const onNextSong = async () => {
-    await TrackPlayer.skipToNext();
+    try {
+      await TrackPlayer.skipToNext();
+    } catch (error) {
+      console.log(error.message);
+      await TrackPlayer.skip(listSong[0]._id);
+    }
   };
 
   const onPrevSong = async () => {
-    await TrackPlayer.skipToPrevious();
+    try {
+      await TrackPlayer.skipToPrevious();
+    } catch (error) {
+      console.log(error.message);
+      await TrackPlayer.skip(listSong[listSong.length - 1]._id);
+    }
   };
 
   useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_STATE], event => {
@@ -92,10 +102,16 @@ const CurrentSongScreen = ({navigation}) => {
           'playback-track-changed',
           async data => {
             console.log(data);
-            const track = await TrackPlayer.getTrack(data.nextTrack);
-            if (!mounted) return;
-            console.log(track);
-            setTrackInfo(track);
+            if (!data.nextTrack) {
+              await onNextSong();
+              const trackIndex = await TrackPlayer.getCurrentTrack();
+              const trackObj = await TrackPlayer.getTrack(trackIndex);
+              setTrackInfo(trackObj);
+            } else {
+              const track = await TrackPlayer.getTrack(data.nextTrack);
+              if (!mounted) return;
+              setTrackInfo(track);
+            }
           },
         );
         onButtonPressed();

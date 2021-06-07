@@ -1,4 +1,4 @@
-import React, {useLayoutEffect} from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {View, Text, StyleSheet} from 'react-native';
 import MyInputText from '../../components/MyInputText/MyInputText';
@@ -8,6 +8,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const RegisEmailScreen = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = useState('');
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -28,12 +29,16 @@ const RegisEmailScreen = () => {
     <View style={styles.container}>
       <Text style={styles.text}>Email của bạn là gì ?</Text>
       <View style={styles.inputContainer}>
-        <MyInputText width="100%" />
+        <MyInputText value={email} setValue={setEmail} width="100%" />
       </View>
       <View style={{alignItems: 'center', marginTop: 10}}>
         <TouchableOpacity
           style={styles.btnNext}
-          onPress={() => navigation.push('Password')}>
+          onPress={() =>
+            navigation.push('Password', {
+              email,
+            })
+          }>
           <Text style={styles.btnText}>Tiếp</Text>
         </TouchableOpacity>
       </View>

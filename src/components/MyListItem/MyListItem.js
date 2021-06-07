@@ -30,6 +30,7 @@ const MyListItem = props => {
               rounded={rounded}
               largeText={largeText}
               album={album}
+              key={album._id}
             />
           ))}
       </ScrollView>

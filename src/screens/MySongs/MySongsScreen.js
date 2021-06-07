@@ -3,9 +3,11 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Avatar} from 'react-native-elements/dist/avatar/Avatar';
 import rootColor from '../../constants/rootColor';
+import {useSelector} from 'react-redux';
 
 const MySongsScreen = () => {
   const navigation = useNavigation();
+  const user = useSelector(state => state.user);
 
   useEffect(() => {
     navigation.setOptions({
@@ -17,7 +19,7 @@ const MySongsScreen = () => {
           <Avatar
             size={30}
             rounded
-            title="L"
+            title={user && user.displayName[0]}
             titleStyle={{color: rootColor.containerColor}}
             containerStyle={{
               backgroundColor: rootColor.mainColor,

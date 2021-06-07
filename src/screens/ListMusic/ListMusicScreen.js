@@ -6,6 +6,7 @@ import ListMusic from '../../components/ListMusic/ListMusic';
 import styles from './styles';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import rootApi from '../../api';
+import {StatusBar} from 'react-native';
 
 const ListMusicScreen = () => {
   const route = useRoute();
@@ -29,9 +30,16 @@ const ListMusicScreen = () => {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
-      <ListMusic songs={songs} />
-    </View>
+    <>
+      <StatusBar
+        backgroundColor="transparent"
+        barStyle="light-content"
+        translucent={true}
+      />
+      <View style={styles.container}>
+        <ListMusic songs={songs} />
+      </View>
+    </>
   );
 };
 

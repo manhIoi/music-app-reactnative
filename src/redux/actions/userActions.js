@@ -1,18 +1,39 @@
 import {userTypes} from '../types';
-import {login} from '../../api/index';
+import rootApi from '../../api/index';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const loginAction = (email, password) => async dispatch => {
   try {
-    const body = await login(email, password);
-    console.log(body);
-
-    return dispatch({
-      type: userTypes.LOGIN,
-      payload: body,
-    });
+    const body = await rootApi.login(email, password);
+    if (body?.authToken) {
+      const payload = {
+        ...body.emailAlready,
+        authToken: body.authToken,
+      };
+      console.log(payload);
+      await AsyncStorage.setItem(
+        'user',
+        JSON.stringify({...payload, password: password}),
+      );
+      return dispatch({
+        type: userTypes.LOGIN,
+        payload: payload,
+      });
+    } else {
+      return body;
+    }
   } catch (error) {
     console.log(error.message);
   }
 };
 
-export {loginAction};
+const logoutAction = () => async dispatch => {
+  try {
+    await AsyncStorage.setItem('user', '');
+    return dispatch({
+      type: userTypes.LOGOUT,
+    });
+  } catch (error) {}
+};
+
+export {loginAction, logoutAction};

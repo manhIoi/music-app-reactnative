@@ -12,6 +12,7 @@ import dimensions from '../../constants/dimensions';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import Loading from '../Loading';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -32,10 +33,8 @@ const ListMusic = ({songs}) => {
   }, [navigation]);
 
   return (
-    // <ScrollView style={styles.container}>
-    //   {songs && songs.map(song => <ItemMusic song={song} songs={songs} />)}
-    // </ScrollView>
     <View style={styles.container}>
+      {!songs[0]?.artwork && <Loading />}
       <ImageHeaderScrollView
         style={{position: 'relative'}}
         maxHeight={400}
@@ -46,7 +45,6 @@ const ListMusic = ({songs}) => {
         headerImage={{
           uri: songs[0]?.artwork,
         }}
-        // foregroundParallaxRatio={1}
         renderForeground={() => (
           <>
             <LinearGradient
