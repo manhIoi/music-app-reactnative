@@ -27,6 +27,8 @@ const RegisEmailScreen = () => {
     if (!res.body) {
       Alert.alert('Lỗi', res);
     } else {
+      const isCreateMyFavorite = await rootApi.createMyFavorite(res.body._id);
+      console.log(isCreateMyFavorite);
       dispatch(loginAction(res.body.email, password));
     }
   };

@@ -9,4 +9,10 @@ const loadingTypes = {
   DONE: 'DONE',
 };
 
-export {userTypes, loadingTypes};
+const myFavoriteTypes = {
+  FETCH_MY_FAVORITE: 'FETCH_MY_FAVORITE',
+  ADD_TO_MY_FAVORITE: 'ADD_TO_MY_FAVORITE',
+  REMOVE_FROM_MY_FAVORITE: 'ADD_TO_MY_FAVORITE',
+};
+
+export {userTypes, loadingTypes, myFavoriteTypes};
