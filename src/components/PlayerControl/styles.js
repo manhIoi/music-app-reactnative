@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     backgroundColor: rootColor.whiteColor,
-    padding: 10,
+    padding: 15,
     marginHorizontal: 20,
     borderRadius: 50,
   },

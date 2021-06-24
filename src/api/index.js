@@ -2,7 +2,12 @@ import {getAllSuggestion} from './suggesttion';
 import {getAlbumBySuggestion} from './album';
 import {getSongByAlbum} from './song';
 import {login, register} from './user';
-import {fetchMyFavorite, createMyFavorite, addToMyFavorite} from './myFavorite';
+import {
+  fetchMyFavorite,
+  createMyFavorite,
+  addToMyFavorite,
+  removeFromMyFavorite,
+} from './myFavorite';
 
 const rootApi = {
   getAllSuggestion,
@@ -13,6 +18,7 @@ const rootApi = {
   fetchMyFavorite,
   createMyFavorite,
   addToMyFavorite,
+  removeFromMyFavorite,
 };
 
 export default rootApi;

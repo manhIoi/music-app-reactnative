@@ -59,12 +59,13 @@ const ListMusic = ({songs}) => {
               }}></LinearGradient>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('Current Song Nav', {
-                  params: {
-                    listSong: songs,
-                  },
-                  screen: 'Current Song',
-                })
+                // navigation.navigate('Current Song Nav', {
+                //   params: {
+                //     listSong: songs,
+                //   },
+                //   screen: 'Current Song',
+                // })
+                console.log('Run music')
               }
               activeOpacity={0.9}
               style={{

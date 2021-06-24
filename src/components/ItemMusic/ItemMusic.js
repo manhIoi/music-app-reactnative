@@ -1,35 +1,48 @@
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {ListItem, Avatar} from 'react-native-elements';
+import React, {useEffect, useState} from 'react';
+import {TouchableOpacity, View} from 'react-native';
+import {ListItem, Avatar, Tooltip, Text} from 'react-native-elements';
 import rootColor from '../../constants/rootColor';
 import styles from './styles';
 import {useNavigation} from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {Tooltip, Text} from 'react-native-elements';
-import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToMyFavorite} from '../../redux/actions/myFavoriteAction';
-import {Alert} from 'react-native';
+import MyToast from '../MyToast';
+import {
+  setListTrack,
+  showModalListTrack,
+} from '../../redux/actions/listTrackAction';
 
 const ItemMusic = ({song, songs}) => {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [message, setMessage] = useState('');
+  // const navigation = useNavigation();
+
   const user = useSelector(state => state.user);
 
-  const listenSong = () => {
-    navigation.navigate('Current Song Nav', {
-      params: {
+  const listenSong = async () => {
+    // navigation.navigate('Current Song Nav', {
+    //   params: {
+    //     songSelected: song,
+    //     listSong: songs,
+    //   },
+    //   screen: 'Current Song',
+    // });
+    dispatch(
+      setListTrack({
         songSelected: song,
         listSong: songs,
-      },
-      screen: 'Current Song',
-    });
+      }),
+    );
+    dispatch(showModalListTrack());
   };
 
   const handleAddToMyFavorite = async () => {
     const message = await dispatch(addToMyFavorite(user._id, song));
     if (!message.type) {
-      Alert.alert('Lỗi', message);
+      setMessage(message);
+    } else {
+      setMessage('Bài hát đã được thêm');
     }
   };
 
@@ -113,6 +126,7 @@ const ItemMusic = ({song, songs}) => {
           />
         </Tooltip>
       </ListItem>
+      <MyToast content={message} />
     </TouchableOpacity>
   );
 };

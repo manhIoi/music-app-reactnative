@@ -25,7 +25,24 @@ const addToMyFavorite = (idUser, newSong) => async dispatch => {
       type: myFavoriteTypes.ADD_TO_MY_FAVORITE,
       payload: body,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-export {fetchMyFavorite, addToMyFavorite};
+const removeFromMyFavorite = (idUser, idSong) => async dispatch => {
+  try {
+    const body = await rootApi.removeFromMyFavorite(idUser, idSong);
+    if (!body._idUser) {
+      return body;
+    }
+    return dispatch({
+      type: myFavoriteTypes.REMOVE_FROM_MY_FAVORITE,
+      payload: body,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export {fetchMyFavorite, addToMyFavorite, removeFromMyFavorite};

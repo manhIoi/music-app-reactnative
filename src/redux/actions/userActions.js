@@ -10,7 +10,6 @@ const loginAction = (email, password) => async dispatch => {
         ...body.emailAlready,
         authToken: body.authToken,
       };
-      console.log(payload);
       await AsyncStorage.setItem(
         'user',
         JSON.stringify({...payload, password: password}),

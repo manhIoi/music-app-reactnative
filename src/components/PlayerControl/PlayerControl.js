@@ -29,7 +29,7 @@ const PlayerControl = props => {
         disabled={!isTrackPlayerInit}>
         <MaterialIcon
           name={`${isPlaying ? 'pause' : 'play-arrow'}`}
-          size={50}
+          size={40}
           color={rootColor.blackColor}
         />
       </TouchableOpacity>

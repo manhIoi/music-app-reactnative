@@ -40,4 +40,23 @@ const addToMyFavorite = async (idUser, newSong) => {
   }
 };
 
-export {fetchMyFavorite, createMyFavorite, addToMyFavorite};
+const removeFromMyFavorite = async (idUser, idSong) => {
+  try {
+    const body = await callApi(
+      'put',
+      `${enpointService}/myFavorite/update/removeFromMyFavorite/${idUser}`,
+      {idSong},
+    );
+
+    return body.data;
+  } catch (error) {
+    console.log(error, 'from api');
+  }
+};
+
+export {
+  fetchMyFavorite,
+  createMyFavorite,
+  addToMyFavorite,
+  removeFromMyFavorite,
+};

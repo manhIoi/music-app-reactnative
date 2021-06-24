@@ -8,6 +8,8 @@ const myFavoriteReducer = (state = {}, action) => {
     case myFavoriteTypes.ADD_TO_MY_FAVORITE:
       console.log(action.payload);
       return action.payload;
+    case myFavoriteTypes.REMOVE_FROM_MY_FAVORITE:
+      return action.payload;
     default:
       return state;
   }

@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import dimensitions from '../../constants/dimensions';
 import rootColor from '../../constants/rootColor';
 
 const styles = StyleSheet.create({
@@ -24,6 +25,19 @@ const styles = StyleSheet.create({
     opacity: 1,
     zIndex: 0,
   },
+  header: {
+    paddingTop: dimensitions.statusBarHeight+14, 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    paddingHorizontal: 10,
+    zIndex: 3,
+  },
+  title: {
+    color: 'white', 
+    fontWeight: "bold", 
+    fontSize: 20
+  }
 });
 
 export default styles;
