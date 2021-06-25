@@ -1,20 +1,36 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styles from './styles';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import rootColor from '../../constants/rootColor';
-import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
-import {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {showModalListTrack} from '../../redux/actions/listTrackAction';
+import {
+  setPauseSong,
+  setPlaySong,
+} from '../../redux/actions/playerWidgetAction';
+import TrackPlayer from 'react-native-track-player';
 
 const PlayerWidget = () => {
   const playerWidget = useSelector(state => state.playerWidget);
-  const navigation = useNavigation();
-  const {currentSong, detailSong} = playerWidget;
+
+  const dispatch = useDispatch();
+  const {currentSong, detailSong, isPlayingSong} = playerWidget;
+
+  const togglePlay = () => {
+    if (isPlayingSong) {
+      dispatch(setPauseSong());
+      TrackPlayer.pause();
+    } else {
+      dispatch(setPlaySong());
+      TrackPlayer.play();
+    }
+  };
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.goBack()}
+      activeOpacity={0.8}
+      onPress={() => dispatch(showModalListTrack())}
       style={styles.container}>
       <Image
         style={styles.image}
@@ -38,19 +54,12 @@ const PlayerWidget = () => {
           <Text style={styles.normalText}>{currentSong?.artist}</Text>
         </View>
         <View style={styles.actions}>
-          <TouchableOpacity style={styles.action}>
-            <MaterialIcon
-              name="favorite-outline"
-              color={rootColor.smokeColor}
-              size={25}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <MaterialIcon
+          <TouchableOpacity onPress={togglePlay}>
+            <FontistoIcon
               style={styles.action}
-              name="favorite-outline"
+              name={isPlayingSong ? 'pause' : 'play'}
               color={rootColor.smokeColor}
-              size={25}
+              size={20}
             />
           </TouchableOpacity>
         </View>

@@ -1,7 +1,12 @@
 import {playerWidgetTypes} from '../types';
 
 const playerWidgetReducer = (
-  state = {isShow: false, currentSong: {}, detailSong: {}},
+  state = {
+    isShow: false,
+    currentSong: {},
+    detailSong: {},
+    isPlayingSong: false,
+  },
   action,
 ) => {
   switch (action.type) {
@@ -28,6 +33,16 @@ const playerWidgetReducer = (
           ...state.detailSong,
           ...action.payload,
         },
+      };
+    case playerWidgetTypes.PLAY_SONG:
+      return {
+        ...state,
+        isPlayingSong: true,
+      };
+    case playerWidgetTypes.PAUSE_SONG:
+      return {
+        ...state,
+        isPlayingSong: false,
       };
     default:
       return state;

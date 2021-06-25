@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, LogBox} from 'react-native';
+import {View, Text, LogBox, Animated} from 'react-native';
 import 'react-native-gesture-handler';
 
 import {NavigationContainer} from '@react-navigation/native';
@@ -14,12 +14,42 @@ import dimensitions from './src/constants/dimensions';
 import {useSelector} from 'react-redux';
 import {useState} from 'react';
 import {useEffect} from 'react';
+import {useRef} from 'react';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   const listTrack = useSelector(state => state.listTrack);
+  const oy = useRef(
+    new Animated.Value(
+      dimensitions.heightScreen + dimensitions.statusBarHeight,
+    ),
+  ).current;
   LogBox.ignoreAllLogs();
+
+  const show = () => {
+    Animated.timing(oy, {
+      toValue: 0,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const hide = () => {
+    Animated.timing(oy, {
+      toValue: dimensitions.heightScreen + dimensitions.statusBarHeight,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  useEffect(() => {
+    if (listTrack.isShowModal) {
+      show();
+    } else {
+      hide();
+    }
+  }, [listTrack.isShowModal]);
 
   return (
     <View style={{flex: 1}}>
@@ -48,7 +78,7 @@ const App = () => {
           />
         </Stack.Navigator>
       </NavigationContainer>
-      <View
+      <Animated.View
         style={{
           position: 'absolute',
           top: 0,
@@ -57,14 +87,12 @@ const App = () => {
           right: 0,
           transform: [
             {
-              translateY: !listTrack.isShowModal
-                ? dimensitions.heightScreen + dimensitions.statusBarHeight
-                : 0,
+              translateY: oy,
             },
           ],
         }}>
         <CurrentSongModal />
-      </View>
+      </Animated.View>
     </View>
   );
 };

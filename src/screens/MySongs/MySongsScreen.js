@@ -12,7 +12,10 @@ import {ListItem, Avatar} from 'react-native-elements';
 import MyToast from '../../components/MyToast';
 import Toast from 'react-native-root-toast';
 import dimensitions from '../../constants/dimensions';
-import {setListTrack} from '../../redux/actions/listTrackAction';
+import {
+  setListTrack,
+  showModalListTrack,
+} from '../../redux/actions/listTrackAction';
 
 const MySongsScreen = () => {
   const navigation = useNavigation();
@@ -43,6 +46,7 @@ const MySongsScreen = () => {
         listSong: myFavorite.listSong,
       }),
     );
+    dispatch(showModalListTrack());
   };
 
   const handleRemoveSong = async idSong => {

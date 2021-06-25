@@ -1,4 +1,5 @@
 import React from 'react';
+import {useEffect} from 'react';
 import {View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -13,6 +14,11 @@ const PlayerControl = props => {
     onNextSong,
     onPrevSong,
   } = props;
+
+  useEffect(() => {
+    console.log(isTrackPlayerInit);
+  }, [isTrackPlayerInit]);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity>

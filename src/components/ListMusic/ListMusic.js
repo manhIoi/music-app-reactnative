@@ -13,12 +13,18 @@ import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Loading from '../Loading';
+import {useDispatch} from 'react-redux';
+import {
+  setListTrack,
+  showModalListTrack,
+} from '../../redux/actions/listTrackAction';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const ListMusic = ({songs}) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTransparent: true,
@@ -36,9 +42,11 @@ const ListMusic = ({songs}) => {
     <View style={styles.container}>
       {!songs[0]?.artwork && <Loading />}
       <ImageHeaderScrollView
-        style={{position: 'relative'}}
+        style={{
+          position: 'relative',
+        }}
         maxHeight={400}
-        minHeight={150}
+        minHeight={100}
         maxOverlayOpacity={0.6}
         minOverlayOpacity={0.3}
         fadeOutForeground
@@ -58,15 +66,10 @@ const ListMusic = ({songs}) => {
                 zIndex: 0,
               }}></LinearGradient>
             <TouchableOpacity
-              onPress={() =>
-                // navigation.navigate('Current Song Nav', {
-                //   params: {
-                //     listSong: songs,
-                //   },
-                //   screen: 'Current Song',
-                // })
-                console.log('Run music')
-              }
+              onPress={() => {
+                dispatch(setListTrack({listSong: songs}));
+                dispatch(showModalListTrack());
+              }}
               activeOpacity={0.9}
               style={{
                 position: 'absolute',

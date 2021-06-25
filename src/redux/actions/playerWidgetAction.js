@@ -1,4 +1,5 @@
 import {playerWidgetTypes} from '../types';
+import TrackPlayer from 'react-native-track-player';
 
 const showPlayerWidget = () => {
   return {
@@ -26,4 +27,22 @@ const setDetailsSong = details => {
   };
 };
 
-export {showPlayerWidget, hidePlayerWidget, setCurrentSong, setDetailsSong};
+const setPlaySong = () => {
+  return {
+    type: playerWidgetTypes.PLAY_SONG,
+  };
+};
+
+const setPauseSong = () => {
+  return {
+    type: playerWidgetTypes.PAUSE_SONG,
+  };
+};
+export {
+  showPlayerWidget,
+  hidePlayerWidget,
+  setCurrentSong,
+  setDetailsSong,
+  setPlaySong,
+  setPauseSong,
+};

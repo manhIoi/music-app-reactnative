@@ -23,14 +23,16 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   setCurrentSong,
   setDetailsSong,
+  setPauseSong,
+  setPlaySong,
 } from '../../redux/actions/playerWidgetAction';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import {hideModalListTrack} from '../../redux/actions/listTrackAction';
 
 const CurrentSongModal = () => {
   const {listSong, songSelected} = useSelector(state => state.listTrack);
+  const {isPlayingSong} = useSelector(state => state.playerWidget);
   const [isTrackPlayerInit, setIsTrackPlayerInit] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [isSeeking, setIsSeeking] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
   const {position, duration} = useTrackPlayerProgress(250);
@@ -38,12 +40,12 @@ const CurrentSongModal = () => {
   const dispatch = useDispatch();
 
   const onButtonPressed = () => {
-    if (!isPlaying) {
+    if (!isPlayingSong) {
       TrackPlayer.play();
-      setIsPlaying(true);
+      dispatch(setPlaySong());
     } else {
       TrackPlayer.pause();
-      setIsPlaying(false);
+      dispatch(setPauseSong());
     }
   };
 
@@ -67,9 +69,9 @@ const CurrentSongModal = () => {
 
   useTrackPlayerEvents([TrackPlayerEvents.PLAYBACK_STATE], event => {
     if (event.state === STATE_PLAYING) {
-      setIsPlaying(true);
+      dispatch(setPlaySong());
     } else {
-      setIsPlaying(false);
+      dispatch(setPauseSong());
     }
   });
 
@@ -87,6 +89,7 @@ const CurrentSongModal = () => {
   };
 
   useEffect(() => {
+    console.log('run this');
     if (listSong.length > 0) {
       console.log(listSong, songSelected);
 
@@ -105,7 +108,7 @@ const CurrentSongModal = () => {
         let isInit = await trackPlayerInit(tmp);
         setIsTrackPlayerInit(isInit);
         if (isInit) {
-          if (!songSelected) {
+          if (!songSelected._id) {
             const trackId = await TrackPlayer.getCurrentTrack();
             if (!trackId) return;
             const track = await TrackPlayer.getTrack(trackId);
@@ -125,11 +128,9 @@ const CurrentSongModal = () => {
                 const trackIndex = await TrackPlayer.getCurrentTrack();
                 const trackObj = await TrackPlayer.getTrack(trackIndex);
                 setTrackInfo(trackObj);
-                // dispatch(setCurrentSong(trackObj));
               } else {
                 const track = await TrackPlayer.getTrack(data.nextTrack);
                 setTrackInfo(track);
-                // dispatch(setCurrentSong(track));
               }
             },
           );
@@ -196,7 +197,7 @@ const CurrentSongModal = () => {
             durationTime={convertTime(duration)}
           />
           <PlayerControl
-            isPlaying={isPlaying}
+            isPlaying={isPlayingSong}
             onButtonPressed={onButtonPressed}
             onNextSong={onNextSong}
             onPrevSong={onPrevSong}
