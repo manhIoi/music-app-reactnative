@@ -1,7 +1,6 @@
 import {listTrackTypes} from '../types';
 
 const setListTrack = listTrack => {
-  console.log('this is listrack action', listTrack);
   return {
     type: listTrackTypes.SET_LIST_TRACK,
     payload: listTrack,

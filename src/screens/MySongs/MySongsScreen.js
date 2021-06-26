@@ -32,14 +32,6 @@ const MySongsScreen = () => {
   };
 
   const listenSong = song => {
-    // navigation.navigate('Current Song Nav', {
-    //   params: {
-    //     songSelected: song,
-    //     listSong: myFavorite.listSong,
-    //   },
-    //   screen: 'Current Song',
-    // });
-
     dispatch(
       setListTrack({
         songSelected: song,
@@ -108,6 +100,7 @@ const MySongsScreen = () => {
         {myFavorite.listSong &&
           myFavorite.listSong.map(song => (
             <TouchableOpacity
+              key={song._id}
               activeOpacity={0.5}
               onPress={() => listenSong(song)}>
               <ListItem

@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {ListItem, Avatar, Tooltip, Text} from 'react-native-elements';
+import {TouchableOpacity, View, Image, StatusBar} from 'react-native';
+import {ListItem, Avatar, Text, BottomSheet} from 'react-native-elements';
 import rootColor from '../../constants/rootColor';
 import styles from './styles';
-import {useNavigation} from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToMyFavorite} from '../../redux/actions/myFavoriteAction';
@@ -16,24 +15,49 @@ import {
 const ItemMusic = ({song, songs}) => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
-  // const navigation = useNavigation();
+  const [isVisible, setIsVisible] = useState(false);
 
   const user = useSelector(state => state.user);
+  const listTrack = useSelector(state => state.listTrack);
+
+  const list = [
+    {
+      title: 'Thích',
+      nameIcon: 'favorite-border',
+      onPress: () => {
+        setIsVisible(false);
+        handleAddToMyFavorite();
+      },
+    },
+    {
+      title: 'Nghe nhạc',
+      nameIcon: 'music-note',
+
+      onPress: () => {
+        setIsVisible(false);
+        listenSong();
+      },
+    },
+    {
+      title: 'Hủy bỏ',
+      nameIcon: 'close',
+      containerStyle: {backgroundColor: rootColor.mainColor},
+      titleStyle: {color: rootColor.grayColor},
+      colorIcon: '#dc3545',
+      onPress: () => setIsVisible(false),
+    },
+  ];
 
   const listenSong = async () => {
-    // navigation.navigate('Current Song Nav', {
-    //   params: {
-    //     songSelected: song,
-    //     listSong: songs,
-    //   },
-    //   screen: 'Current Song',
-    // });
-    dispatch(
-      setListTrack({
-        songSelected: song,
-        listSong: songs,
-      }),
-    );
+    if (listTrack.songSelected._id !== song._id) {
+      dispatch(
+        setListTrack({
+          songSelected: song,
+          listSong: songs,
+        }),
+      );
+    }
+
     dispatch(showModalListTrack());
   };
 
@@ -48,6 +72,7 @@ const ItemMusic = ({song, songs}) => {
 
   return (
     <TouchableOpacity activeOpacity={0.5} onPress={listenSong}>
+      {isVisible && <StatusBar backgroundColor={rootColor.blackColor} />}
       <ListItem
         bottomDivider
         containerStyle={{
@@ -69,54 +94,7 @@ const ItemMusic = ({song, songs}) => {
           </ListItem.Subtitle>
         </ListItem.Content>
 
-        <Tooltip
-          withPointer={false}
-          containerStyle={{
-            paddingVertical: 10,
-            minHeight: 80,
-            backgroundColor: rootColor.containerColor,
-            borderWidth: 1,
-            borderColor: rootColor.mainColor,
-          }}
-          popover={
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'space-around',
-              }}>
-              <TouchableOpacity
-                onPress={handleAddToMyFavorite}
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <MaterialIcons
-                  name="favorite-border"
-                  color={rootColor.mainColor}
-                  size={25}
-                />
-                <Text style={{color: rootColor.smokeColor, marginLeft: 10}}>
-                  Thích
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={listenSong}
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <MaterialIcons
-                  name="headset"
-                  color={rootColor.mainColor}
-                  size={25}
-                />
-                <Text style={{color: rootColor.smokeColor, marginLeft: 10}}>
-                  Nghe nhạc
-                </Text>
-              </TouchableOpacity>
-            </View>
-          }
-          overlayColor={false}>
+        <TouchableOpacity onPress={() => setIsVisible(true)}>
           <ListItem.Chevron
             iconProps={{
               name: 'more-horiz',
@@ -124,9 +102,48 @@ const ItemMusic = ({song, songs}) => {
               color: rootColor.smokeColor,
             }}
           />
-        </Tooltip>
+        </TouchableOpacity>
+        <BottomSheet
+          isVisible={isVisible}
+          containerStyle={{
+            backgroundColor: rootColor.blackColor,
+            opacity: 0.95,
+          }}>
+          <View style={{alignItems: 'center', marginBottom: 30}}>
+            <Image
+              source={{uri: song.artwork}}
+              style={{
+                width: 150,
+                height: 150,
+                marginBottom: 10,
+              }}
+            />
+            <Text style={{color: rootColor.whiteColor}}>{song.title}</Text>
+            <Text style={{color: rootColor.whiteColor}}>{song.artist}</Text>
+          </View>
+
+          {list.map((l, i) => (
+            <ListItem
+              key={i}
+              containerStyle={[styles.itemBottomSheet, l.containerStyle]}
+              onPress={l.onPress}>
+              <ListItem.Content style={styles.titleContainer}>
+                <ListItem.Title style={styles.textBottomSheet}>
+                  <MaterialIcons
+                    name={l.nameIcon}
+                    size={20}
+                    color={l.colorIcon ? l.colorIcon : rootColor.smokeColor}
+                  />
+                </ListItem.Title>
+                <ListItem.Title style={[styles.textBottomSheet, l.titleStyle]}>
+                  {l.title}
+                </ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          ))}
+        </BottomSheet>
       </ListItem>
-      <MyToast content={message} />
+      <MyToast content={message} setContent={setMessage} />
     </TouchableOpacity>
   );
 };

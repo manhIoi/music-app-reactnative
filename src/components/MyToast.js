@@ -3,26 +3,23 @@ import Toast from 'react-native-root-toast';
 import dimensitions from '../constants/dimensions';
 import rootColor from '../constants/rootColor';
 
-const MyToast = ({content}) => {
+const MyToast = ({content, setContent}) => {
   const [isShowMessage, setIsShowMessage] = useState(false);
-  const [message, setMessage] = useState('');
 
   useEffect(() => {
     if (isShowMessage) {
-      console.log('b');
       setTimeout(() => {
         setIsShowMessage(false);
-        console.log('c');
+        setContent('');
       }, 1000);
     }
   }, [isShowMessage]);
 
   useEffect(() => {
-    if (content && !message) {
+    if (content) {
       setIsShowMessage(true);
-      setMessage(content);
     }
-  }, [content, message]);
+  }, [content]);
   return (
     <Toast
       visible={isShowMessage}
@@ -31,7 +28,7 @@ const MyToast = ({content}) => {
       textColor={rootColor.blackColor}
       opacity={1}
       hideOnPress={true}>
-      {message}
+      {content}
     </Toast>
   );
 };

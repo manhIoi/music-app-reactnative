@@ -4,7 +4,6 @@ import {myFavoriteTypes} from '../types';
 const fetchMyFavorite = idUser => async dispatch => {
   try {
     const body = await rootApi.fetchMyFavorite(idUser);
-    console.log(body);
 
     return dispatch({
       type: myFavoriteTypes.FETCH_MY_FAVORITE,

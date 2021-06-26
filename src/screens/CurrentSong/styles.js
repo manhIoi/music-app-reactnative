@@ -8,13 +8,13 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   wrapper: {
-    zIndex: 2,
+    zIndex: 100,
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
     paddingHorizontal: 10,
-    paddingVertical: 50,
+    paddingVertical: 30,
   },
   hightLight: {
     position: 'absolute',
@@ -26,18 +26,18 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   header: {
-    paddingTop: dimensitions.statusBarHeight+14, 
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    alignItems: 'center', 
+    paddingTop: dimensitions.statusBarHeight + 14,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 10,
     zIndex: 3,
   },
   title: {
-    color: 'white', 
-    fontWeight: "bold", 
-    fontSize: 20
-  }
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
 });
 
 export default styles;

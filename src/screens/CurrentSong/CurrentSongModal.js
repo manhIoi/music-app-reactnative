@@ -89,10 +89,7 @@ const CurrentSongModal = () => {
   };
 
   useEffect(() => {
-    console.log('run this');
     if (listSong.length > 0) {
-      console.log(listSong, songSelected);
-
       const startPlayer = async () => {
         const tmp = await listSong.map(song => {
           return {
@@ -118,32 +115,34 @@ const CurrentSongModal = () => {
             await TrackPlayer.skip(songSelected._id);
             setTrackInfo(track);
           }
-
-          const listener = TrackPlayer.addEventListener(
-            'playback-track-changed',
-            async data => {
-              console.log(data);
-              if (!data.nextTrack) {
-                await onNextSong();
-                const trackIndex = await TrackPlayer.getCurrentTrack();
-                const trackObj = await TrackPlayer.getTrack(trackIndex);
-                setTrackInfo(trackObj);
-              } else {
-                const track = await TrackPlayer.getTrack(data.nextTrack);
-                setTrackInfo(track);
-              }
-            },
-          );
-
-          onButtonPressed();
-          return () => {
-            listener.remove();
-          };
+          TrackPlayer.play();
+          dispatch(setPlaySong());
         }
       };
       startPlayer();
     }
-  }, [songSelected, listSong]);
+  }, [listSong]);
+
+  useEffect(() => {
+    const listener = TrackPlayer.addEventListener(
+      'playback-track-changed',
+      async data => {
+        console.log(data);
+        if (!data.nextTrack) {
+          await onNextSong();
+          const trackIndex = await TrackPlayer.getCurrentTrack();
+          const trackObj = await TrackPlayer.getTrack(trackIndex);
+          setTrackInfo(trackObj);
+        } else {
+          const track = await TrackPlayer.getTrack(data.nextTrack);
+          setTrackInfo(track);
+        }
+      },
+    );
+    return () => {
+      listener.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (!isSeeking && position && duration) {
@@ -154,7 +153,6 @@ const CurrentSongModal = () => {
 
   useEffect(() => {
     if (trackInfo.id) {
-      console.log(trackInfo);
       dispatch(setCurrentSong(trackInfo));
     }
   }, [trackInfo]);
@@ -173,11 +171,18 @@ const CurrentSongModal = () => {
           uri: trackInfo && trackInfo.artwork,
         }}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={closeModal}>
+          <TouchableOpacity
+            onPress={closeModal}
+            style={{
+              width: 40,
+              height: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <AntDesignIcon name="down" size={20} color={rootColor.whiteColor} />
           </TouchableOpacity>
           <Text style={styles.title}>{trackInfo?.title}</Text>
-          <View style={{width: 20, height: 20}}></View>
+          <View style={{width: 40, height: 40}}></View>
         </View>
         <View style={styles.wrapper}>
           <DetailSong title={trackInfo?.title} artist={trackInfo?.artist} />

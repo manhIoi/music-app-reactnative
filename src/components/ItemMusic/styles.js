@@ -12,6 +12,18 @@ const styles = StyleSheet.create({
   normalText: {
     color: rootColor.smokeColor,
   },
+  itemBottomSheet: {
+    backgroundColor: rootColor.blackColor,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  textBottomSheet: {
+    color: rootColor.whiteColor,
+    fontWeight: 'bold',
+    marginRight: 20,
+  },
 });
 
 export default styles;

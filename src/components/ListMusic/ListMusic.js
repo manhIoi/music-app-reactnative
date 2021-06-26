@@ -98,7 +98,10 @@ const ListMusic = ({songs}) => {
             height: windowHeight - 150 - dimensions.heightTabbar,
             backgroundColor: rootColor.blackColor,
           }}>
-          {songs && songs.map(song => <ItemMusic song={song} songs={songs} />)}
+          {songs &&
+            songs.map(song => (
+              <ItemMusic key={song._id} song={song} songs={songs} />
+            ))}
         </View>
       </ImageHeaderScrollView>
     </View>

@@ -45,7 +45,6 @@ const MainTab = () => {
   }, [user]);
 
   useEffect(() => {
-    console.log(playerWidget);
     if (playerWidget.currentSong.id) {
       dispatch(showPlayerWidget());
     }
